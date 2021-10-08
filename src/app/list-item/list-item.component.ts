@@ -18,20 +18,9 @@ export class ListItemComponent implements OnInit {
     public searchType: string = '';
 
     constructor(private itemService: ItemService) {
-        let localItem = localStorage.getItem('searchItem');
-        let localType = localStorage.getItem('searchType');
-        let localSuffix = localStorage.getItem('searchSuffix');
+
         let localPage = localStorage.getItem('page');
 
-        if (localItem != null) {
-            this.searchItem = localItem;
-        }
-        if (localType != null) {
-            this.searchType = localType;
-        }
-        if (localSuffix != null) {
-            this.searchSuffix = localSuffix;
-        }
         if (localPage != null) {
             this.getItems({page: Number(localPage), pagesize: 5});
             this.page = Number(localPage);
@@ -46,6 +35,40 @@ export class ListItemComponent implements OnInit {
 
     getItems(args: addModelArgs) {
 
+        let localItem = localStorage.getItem('searchItem');
+        let localType = localStorage.getItem('searchType');
+        let localSuffix = localStorage.getItem('searchSuffix');
+
+        if (localItem != null) {
+            this.searchItem = localItem;
+        }
+        if (localType != null) {
+            this.searchType = localType;
+        }
+        if (localSuffix != null) {
+            this.searchSuffix = localSuffix;
+        }
+
+        this.itemService.getItems().subscribe((items) => {
+            
+            let startIndex = args.pagesize * (args.page - 1);
+            this.collectionSize = items.length;
+            this.items = items.slice(startIndex, startIndex + args.pagesize);
+
+        },
+            (error) => {
+                // error - объект ошибки
+                console.log('oops', error);
+            }
+        );
+    }
+
+    getOtherItems(args: addModelArgs) {
+
+        // Обнуляем фильтры
+        this.deleteFilters();
+
+        // Получаем другие данные
         this.itemService.getItems().subscribe((items) => {
             
             let startIndex = args.pagesize * (args.page - 1);
@@ -71,5 +94,17 @@ export class ListItemComponent implements OnInit {
     public getFromFilter3(data: string) {
         this.searchSuffix = data;
         localStorage.setItem('searchSuffix', this.searchSuffix);
+    }
+    public deleteFilters() {
+        let arrCheck: Array<any> | null =  Array.from(document.getElementsByName('checkbox'));
+        arrCheck.forEach((input) => {input.checked = false;});
+        let arrRadio: Array<any> | null =  Array.from(document.getElementsByName('radio'));
+        arrRadio.forEach((input) => {input.checked = false;});
+        localStorage.removeItem('searchItem');
+        localStorage.removeItem('checkboxItem');
+        localStorage.removeItem('radioItem');
+        this.searchItem = '';
+        this.searchType = '';
+        this.searchSuffix = '';
     }
 }

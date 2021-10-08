@@ -26,8 +26,7 @@
                     </div>
                 </div>
             </div>
-            {{searchItem}}
-            <app-pagination [amount2]="collectionSize" [amount1]="page" (changePage)="getItems($event)"></app-pagination>
+            <app-pagination [amount2]="collectionSize" [amount1]="page" (changePage)="getOtherItems($event)"></app-pagination>
         </section>
         <aside class="list__aside">
             <app-filter [arrItems]="items" (event)="getFromFilter($event)" (event2)="getFromFilter2($event)" (event3)="getFromFilter3($event)"></app-filter> 

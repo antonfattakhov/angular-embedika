@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, AfterViewChecked, } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '../item';
 import { ItemService } from '../item.service';
 
@@ -7,7 +7,7 @@ import { ItemService } from '../item.service';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit, AfterViewChecked {
+export class FilterComponent implements OnInit {
 
     public searchItem: string = '';
     public searchSuffix: string = '';
@@ -17,10 +17,11 @@ export class FilterComponent implements OnInit, AfterViewChecked {
 
     @Input() set arrItems(value: Item[]) {
         if (value) {
+            this.searchType = [];
             this.getChekboxArr(value);
             this.getRadioArr(value);
 
-            // Запускаю setTimeout, чтобы запустить следующие функции последнюю очередь в стеке
+            // Запускаю setTimeout, чтобы запустить следующие функции в последнюю очередь в стеке
             // Это нужно, чтобы дождаться прогрузки ДОМ-элементов
             setTimeout(() => {
             // Проверяем данные для фильтра Checkbox
@@ -38,12 +39,6 @@ export class FilterComponent implements OnInit, AfterViewChecked {
     constructor(private itemService: ItemService) { }
 
     ngOnInit(): void {}
-
-    ngAfterViewChecked() {
-
-        // Разбирался с циклом жизни компонента)))
-
-    }
 
     // Методы
     getChekboxArr(value: Item[]) {
