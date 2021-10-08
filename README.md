@@ -2,7 +2,7 @@
 
 Одностраничное приложение, в котором реализована пагинация, фильтры, поиск, подгрузка данных.
 Это моя первая задачи по применению фреймворка ANGULAR.
-Реализацию можно найти по ссылке [https://antonfattakhov.github.io/angular-embedika/].
+Реализацию можно найти по ссылке https://antonfattakhov.github.io/angular-embedika/.
 
 # Description
 
